@@ -1,0 +1,16 @@
+{
+  "name": "smallapi",
+  "version": "1.0.0",
+  "description": "Testing",
+  "main": "server.js",
+  "scripts": {
+    "test": "nodemon server.js",
+    "start": "nodemon server.js"
+  },
+  "author": "Anjan",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.7.13"
+  }
+}
