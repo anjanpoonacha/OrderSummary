@@ -24,11 +24,6 @@ const userSchema = mongoose.Schema({
 const Order = mongoose.model('Order', orderSchema);
 const User = mongoose.model('User', userSchema);
 
-/*
-Note:
-  1. isActive is always false when ordered
-  2. isActive comes to play only after a product is delivered. So, it is not required at this stage.
-*/
 const getDeliveryDate = async (uid, orderedAt, isActive = false) => {
   try {
     const user = await User.findById(uid);
@@ -36,19 +31,25 @@ const getDeliveryDate = async (uid, orderedAt, isActive = false) => {
 
     console.log(`Ordered by ${name} on ${orderedAt} ${isActive}`);
 
-    console.log(`Delivery is on ${dateLogic(orderedAt).toUTCString()}`);
+    console.log(
+      `Delivery is on ${dateLogic(orderedAt, isActive).toUTCString()}`
+    );
   } catch (err) {
     console.log(err);
   }
 };
 
-const dateLogic = orderedAt => {
+const dateLogic = (orderedAt, isActive) => {
   const day = orderedAt.getDay();
   let numFri;
-  if (day !== 4 && day !== 5 && day !== 6) {
+  if (day !== 4 && day !== 5 && day !== 6 && !isActive) {
     // provided: First day of the week is Sunday and NOT Monday
     numFri = 5;
     console.log(`Delivery is on current week's friday`);
+  } else if (day !== 4 && day !== 5 && day !== 6 && isActive) {
+    // provided: First day of the week is Sunday and NOT Monday
+    numFri = 12;
+    console.log(`Delivery is on next week's friday`);
   } else {
     numFri = 12;
     console.log(`Delivery is on next week's friday`);
@@ -80,7 +81,7 @@ const orderData = async userID => {
 // 5de6298bc336250d48b992b6 - monday order
 // 5de629500d23052a108b37f8 - sunday order
 
-orderData('5de63de00d874733642084ce');
+orderData('5de63de00d874733642084cb');
 
 module.exports = app;
 
