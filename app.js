@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 
 const app = express();
 
+module.exports = app;
+
 const orderSchema = mongoose.Schema({
   isActive: {
     type: Boolean
@@ -55,7 +57,9 @@ const dateLogic = (orderedAt, isActive) => {
     console.log(`Delivery is on next week's friday`);
   }
   const add = numFri - day;
-  deliveryDate = new Date();
+  // deliveryDate = new Date();
+  // deliveryDate.setDate(orderedAt.getDate() + add);
+  deliveryDate = orderedAt;
   deliveryDate.setDate(orderedAt.getDate() + add);
   return deliveryDate;
 };
@@ -81,9 +85,9 @@ const orderData = async userID => {
 // 5de6298bc336250d48b992b6 - monday order
 // 5de629500d23052a108b37f8 - sunday order
 
-orderData('5de63de00d874733642084cb');
-
-module.exports = app;
+// orderData('5de6298bc336250d48b992b6');
+orderData('5de692514ee2ba203c6722b9');
+orderData('5de692514ee2ba203c6722b8');
 
 // (async () => {
 //   const query = await Order.findOneAndDelete({
@@ -92,16 +96,10 @@ module.exports = app;
 //   console.log(query);
 // })();
 
-// User.create(
-//   { name: '3' },
-//   { name: '4' },
-//   { name: '5' },
-//   { name: '6' },
-//   { name: '7' }
-// );
+// User.create({ name: 'testing 1' }, { name: 'testing 2' });
 
 // Order.create({
 //   userId: '5de6298bc336250d48b992b6',
-//   isActive: true,
+//   isActive: false,
 //   orderedAt: new Date('2019-12-07T09:22:24.467Z')
 // });
